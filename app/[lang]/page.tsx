@@ -18,14 +18,21 @@ const TILTS = [-6, 4, -3, 5, -4, 3];
 const STRIP_IDS = ["masgouf", "mixed", "milaq", "offer-family", "baklava", "chai", "tikka", "hummus"];
 
 // A slowly turning ring of text, like a sticker on the takeaway bag.
-function SpinBadge({ text }: { text: string }) {
+function SpinBadge({ text, arabic }: { text: string; arabic: boolean }) {
   return (
     <svg viewBox="0 0 200 200" className="h-full w-full motion-safe:animate-[spin_18s_linear_infinite]" aria-hidden="true">
       <defs>
         <path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
       </defs>
       <circle cx="100" cy="100" r="98" fill="#f2a71b" />
-      <text fill="#3b1f14" fontSize="17" fontFamily="Lalezar, Rubik, sans-serif" letterSpacing="2">
+      <text
+        fill="#3b1f14"
+        fontSize={arabic ? 19 : 17}
+        fontFamily="Lalezar, Rubik, sans-serif"
+        letterSpacing={arabic ? 0 : 2}
+        direction="ltr"
+        style={{ direction: "ltr" }}
+      >
         <textPath href="#ring">{text}</textPath>
       </text>
     </svg>
@@ -38,7 +45,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const t = content[lang];
   const locale = lang === "ar" ? "ar-IQ" : "en-US";
   const arabicWord = /[؀-ۿ]/.test(t.word);
-  const badge = lang === "ar" ? "على الفحم • من ١٩٩٨ • أبو نواس • بغداد • " : "OVER CHARCOAL • SINCE 1998 • ABU NUWAS • BAGHDAD • ";
+  const badge = lang === "ar" ? "على الفحم  •  من ١٩٩٨  •  أبو نواس  •  بغداد  •  على الفحم  •  شط دجلة  •  " : "OVER CHARCOAL • SINCE 1998 • ABU NUWAS • BAGHDAD • ";
 
   const names = catalog(t);
   const stripCaptions = STRIP_IDS.map((id) => names[id]?.name ?? "");
@@ -89,7 +96,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <HeroScene label={t.hero.sceneLabel} />
 
           <div className="pointer-events-none absolute end-6 top-28 hidden h-32 w-32 sm:block lg:end-12 lg:h-40 lg:w-40">
-            <SpinBadge text={badge} />
+            <SpinBadge text={badge} arabic={arabicWord} />
           </div>
 
           <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-6 px-5 pb-10 sm:px-8 md:grid-cols-[1fr_auto_1fr] md:items-end">
