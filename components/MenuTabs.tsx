@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { CupSoda, Flame, Leaf, Search, Star, Users, X } from "lucide-react";
+import { CupSoda, EggFried, Flame, Leaf, Search, Star, Users, X } from "lucide-react";
 import type { Content, MenuItem, Tag } from "@/lib/content";
 import { dishPhotos, srcSet, unsplash } from "@/lib/photos";
 import { AddButton } from "./cart/AddButton";
@@ -45,7 +45,7 @@ export function DishCard({ item, t, fmt }: { item: MenuItem; t: Content["menu"];
           label={`${t.sheet.open}: ${item.name}`}
           className="grid h-28 w-28 shrink-0 place-items-center rounded-2xl bg-saffron/25 text-[#7a4d00] sm:h-32 sm:w-32"
         >
-          <CupSoda className="h-10 w-10" aria-hidden="true" />
+          {item.id === "makhlama" ? <EggFried className="h-10 w-10" aria-hidden="true" /> : <CupSoda className="h-10 w-10" aria-hidden="true" />}
         </OpenDish>
       )}
       {photo && (

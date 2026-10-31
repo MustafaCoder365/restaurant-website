@@ -35,7 +35,6 @@ export const dishPhotos: Record<string, string> = {
   tashreeb: "photo-1620041328526-d0cf044a0739", // Filipp Romanovski
   bagilla: "photo-1622040806062-27ae4deb4a40", // Adam Bartoszewicz
   kahi: "photo-1617806501553-d3a6a3a7b227", // Ömer Haktan Bulut
-  makhlama: "photo-1547058881-aa0edd92aab3", // Pille R. Priske
   aroog: "photo-1593001872095-7d5b3868fb1d", // Anton
   hummus: "photo-1697126248475-a537cc5cce28", // Imad 786
   salad: "photo-1512621776951-a57141f2eefd", // Anna Pelzer
