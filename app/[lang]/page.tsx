@@ -1,8 +1,11 @@
-import { ArrowDown, Clock, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowDown, Clock, MapPin, MessageCircle, Phone, QrCode } from "lucide-react";
 import { BuildSection } from "@/components/BuildSection";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartContext";
-import { Offers, PhotoStrip, Picks } from "@/components/Sections";
+import { Offers, PhotoStrip, Picks, Story } from "@/components/Sections";
+import { DishSheet } from "@/components/cart/DishSheet";
+import Link from "next/link";
+import QRCode from "qrcode";
 import { Reserve } from "@/components/Reserve";
 import { Header } from "@/components/Header";
 import { Intro } from "@/components/Intro";
@@ -48,6 +51,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const badge = lang === "ar" ? "على الفحم  •  من ١٩٩٨  •  أبو نواس  •  بغداد  •  على الفحم  •  شط دجلة  •  " : "OVER CHARCOAL • SINCE 1998 • ABU NUWAS • BAGHDAD • ";
 
   const names = catalog(t);
+  const menuUrl = `https://mustafacoder365.github.io${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/${lang}/menu/`;
+  const qrSvg = await QRCode.toString(menuUrl, {
+    type: "svg",
+    margin: 0,
+    errorCorrectionLevel: "M",
+    color: { dark: "#3b1f14", light: "#00000000" },
+  });
   const stripCaptions = STRIP_IDS.map((id) => names[id]?.name ?? "");
 
   return (
@@ -156,12 +166,36 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="mt-10">
               <MenuTabs t={t.menu} locale={locale} />
             </div>
+
+            {/* Table QR menu */}
+            <div className="mt-16 grid items-center gap-8 rounded-[2rem] bg-date p-6 text-cream sm:grid-cols-[auto_1fr] sm:p-10">
+              <div className="mx-auto w-44 -rotate-3 rounded-3xl bg-cream p-4 shadow-xl sm:w-52">
+                <div className="aspect-square" role="img" aria-label={t.tableMenu.scan} dangerouslySetInnerHTML={{ __html: qrSvg }} />
+                <p className="mt-2 text-center font-[family-name:var(--font-display)] text-lg text-pomegranate">{t.brand}</p>
+              </div>
+              <div className="text-center sm:text-start">
+                <p className="inline-flex items-center gap-2 rounded-full bg-saffron px-3 py-1 text-sm font-semibold text-date">
+                  <QrCode className="h-4 w-4" aria-hidden="true" />
+                  {t.tableMenu.scan}
+                </p>
+                <h3 className="mt-3 text-5xl">{t.tableMenu.title}</h3>
+                <p className="mt-2 max-w-[44ch] text-cream/75 sm:mx-0">{t.tableMenu.lead}</p>
+                <Link
+                  href={`/${lang}/menu/`}
+                  className="mt-5 inline-flex rounded-full bg-cream px-6 py-3 font-semibold text-pomegranate transition-transform hover:-rotate-2 hover:scale-105"
+                >
+                  {t.tableMenu.link}
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
         <Offers t={t} locale={locale} />
 
         <PhotoStrip title={t.gallery.title} captions={stripCaptions} />
+
+        <Story t={t} locale={locale} />
 
         <Reserve t={t} locale={locale} />
 
@@ -234,7 +268,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </p>
         </div>
       </footer>
-      <CartDrawer t={t} locale={locale} />
+      <DishSheet t={t} lang={lang} locale={locale} />
+      <CartDrawer t={t} locale={locale} lang={lang} />
     </CartProvider>
   );
 }

@@ -33,6 +33,7 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
     { href: "#menu", label: t.nav.menu },
     { href: "#build", label: t.nav.build },
     { href: "#offers", label: t.nav.offers },
+    { href: "#story", label: t.nav.story },
     { href: "#reserve", label: t.nav.reserve },
     { href: "#visit", label: t.nav.visit },
   ];

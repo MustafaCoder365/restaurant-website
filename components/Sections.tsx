@@ -2,6 +2,8 @@ import { Check, Users } from "lucide-react";
 import type { Content } from "@/lib/content";
 import { dishPhotos, photos, srcSet, unsplash } from "@/lib/photos";
 import { AddButton } from "./cart/AddButton";
+import { CountUp } from "./CountUp";
+import { OpenDish } from "./cart/OpenDish";
 
 const PICK_TILTS = ["md:-rotate-2", "md:rotate-1 md:translate-y-10", "md:-rotate-1"];
 
@@ -30,7 +32,7 @@ export function Picks({ t, locale }: { t: Content; locale: string }) {
               key={item.id}
               className={`group relative overflow-hidden rounded-[2rem] bg-cream text-date shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)] transition-transform duration-500 hover:rotate-0 ${PICK_TILTS[i]}`}
             >
-              <div className="relative aspect-[4/5] overflow-hidden">
+              <OpenDish id={item.id} label={`${t.menu.sheet.open}: ${item.name}`} className="relative block aspect-[4/5] w-full overflow-hidden text-start">
                 <img
                   src={unsplash(dishPhotos[item.id], 700, 875)}
                   srcSet={srcSet(dishPhotos[item.id], [400, 700, 1000], 1.25)}
@@ -40,15 +42,15 @@ export function Picks({ t, locale }: { t: Content; locale: string }) {
                   decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-date/85 via-date/10 to-transparent" />
+                <span className="absolute inset-0 bg-gradient-to-t from-date/85 via-date/10 to-transparent" />
                 <span className="absolute start-5 top-4 font-[family-name:var(--font-display)] text-6xl text-cream/90 drop-shadow">
                   {fmt.format(i + 1).padStart(2, fmt.format(0))}
                 </span>
-                <div className="absolute inset-x-0 bottom-0 p-5 text-cream">
-                  <h3 className="text-4xl">{item.name}</h3>
-                  <p className="mt-1 line-clamp-2 text-sm text-cream/80">{item.desc}</p>
-                </div>
-              </div>
+                <span className="absolute inset-x-0 bottom-0 block p-5 text-cream">
+                  <span className="block font-[family-name:var(--font-display)] text-4xl leading-tight">{item.name}</span>
+                  <span className="mt-1 line-clamp-2 block text-sm text-cream/80">{item.desc}</span>
+                </span>
+              </OpenDish>
               <div className="flex items-center justify-between gap-3 p-5">
                 <p className="font-[family-name:var(--font-display)] text-3xl tabular-nums text-pomegranate">
                   {fmt.format(item.price)} <span className="font-[family-name:var(--font-sans)] text-sm text-date/55">{t.menu.currency}</span>
@@ -172,6 +174,94 @@ export function PhotoStrip({ title, captions }: { title: string; captions: strin
             </div>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+/** Where the grill came from: photos, a short timeline, and numbers. */
+export function Story({ t, locale }: { t: Content; locale: string }) {
+  const s = t.story;
+  const [a, b, c] = photos.story;
+  return (
+    <section id="story" aria-labelledby="story-title" className="overflow-hidden bg-paper">
+      <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
+        {/* Photo collage */}
+        <div className="relative mx-auto h-[26rem] w-full max-w-lg sm:h-[32rem]" aria-hidden="true">
+          <img
+            src={unsplash(a, 600, 760)}
+            srcSet={srcSet(a, [400, 600, 900], 1.27)}
+            sizes="(min-width: 1024px) 22rem, 60vw"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute start-0 top-0 h-[78%] w-[62%] -rotate-3 rounded-[1.75rem] object-cover shadow-[0_30px_60px_-28px_rgba(59,31,20,0.7)]"
+          />
+          <img
+            src={unsplash(b, 600, 600)}
+            srcSet={srcSet(b, [400, 600, 900], 1)}
+            sizes="(min-width: 1024px) 18rem, 50vw"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute end-0 top-10 h-[46%] w-[48%] rotate-3 rounded-[1.75rem] border-[6px] border-paper object-cover shadow-[0_30px_60px_-28px_rgba(59,31,20,0.7)]"
+          />
+          <img
+            src={unsplash(c, 700, 500)}
+            srcSet={srcSet(c, [400, 700, 1000], 0.71)}
+            sizes="(min-width: 1024px) 20rem, 55vw"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute bottom-0 end-4 h-[42%] w-[58%] -rotate-2 rounded-[1.75rem] border-[6px] border-paper object-cover shadow-[0_30px_60px_-28px_rgba(59,31,20,0.7)]"
+          />
+          <span className="absolute bottom-10 start-2 grid h-28 w-28 rotate-[-10deg] place-items-center rounded-full bg-saffron text-center font-[family-name:var(--font-display)] text-xl leading-tight text-date shadow-xl">
+            {s.timeline[0].year}
+          </span>
+        </div>
+
+        {/* Text and timeline */}
+        <div>
+          <p className="inline-block rotate-2 rounded-full bg-turquoise px-4 py-1 font-semibold text-cream">{s.kicker}</p>
+          <h2 id="story-title" className="mt-4 max-w-[18ch] text-5xl text-pomegranate sm:text-6xl">
+            {s.title}
+          </h2>
+          <p className="mt-4 max-w-[48ch] text-lg text-date/75">{s.lead}</p>
+          <ol className="relative mt-8 space-y-6 border-s-2 border-dashed border-pomegranate/30 ps-6">
+            {s.timeline.map((step) => (
+              <li key={step.year} className="relative">
+                <span className="absolute -start-[2.05rem] top-1.5 h-4 w-4 rounded-full border-4 border-paper bg-pomegranate ring-2 ring-pomegranate/30" aria-hidden="true" />
+                <p className="font-[family-name:var(--font-display)] text-2xl text-pomegranate">{step.year}</p>
+                <p className="text-date/80">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      {/* Numbers and a word from the founder */}
+      <div className="bg-pomegranate text-cream">
+        <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+          <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+            {s.stats.map((st) => (
+              <div key={st.label} className="text-center">
+                <dt className="sr-only">{st.label}</dt>
+                <dd>
+                  <span className="block font-[family-name:var(--font-display)] text-6xl text-saffron sm:text-7xl">
+                    <CountUp value={st.value} locale={locale} suffix={st.suffix} />
+                  </span>
+                  <span className="mt-1 block text-cream/80" aria-hidden="true">
+                    {st.label}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <figure className="mx-auto mt-12 max-w-3xl text-center">
+            <blockquote className="font-[family-name:var(--font-display)] text-3xl leading-snug sm:text-4xl">“{s.quote}”</blockquote>
+            <figcaption className="mt-3 text-cream/70">— {s.quoteBy}</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ import { Flame, Leaf, Search, Star, Users, X } from "lucide-react";
 import type { Content, MenuItem, Tag } from "@/lib/content";
 import { dishPhotos, srcSet, unsplash } from "@/lib/photos";
 import { AddButton } from "./cart/AddButton";
+import { OpenDish } from "./cart/OpenDish";
 
 const TAG_ICON: Record<Tag, React.ComponentType<{ className?: string }>> = {
   spicy: Flame,
@@ -34,12 +35,16 @@ function norm(s: string) {
     .replace(/[چ]/g, "ج");
 }
 
-function DishCard({ item, t, fmt }: { item: MenuItem; t: Content["menu"]; fmt: Intl.NumberFormat }) {
+export function DishCard({ item, t, fmt }: { item: MenuItem; t: Content["menu"]; fmt: Intl.NumberFormat }) {
   const photo = dishPhotos[item.id];
   return (
     <li className="group flex gap-4 rounded-3xl bg-paper p-3 shadow-[0_14px_40px_-28px_rgba(59,31,20,0.6)] ring-1 ring-date/5 transition-shadow hover:shadow-[0_22px_50px_-26px_rgba(59,31,20,0.7)] sm:p-4">
       {photo && (
-        <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl bg-cream sm:h-32 sm:w-32">
+        <OpenDish
+          id={item.id}
+          label={`${t.sheet.open}: ${item.name}`}
+          className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl bg-cream sm:h-32 sm:w-32"
+        >
           <img
             src={unsplash(photo, 300, 300)}
             srcSet={srcSet(photo, [160, 300, 450], 1)}
@@ -54,10 +59,14 @@ function DishCard({ item, t, fmt }: { item: MenuItem; t: Content["menu"]; fmt: I
               <Star className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
             </span>
           )}
-        </div>
+        </OpenDish>
       )}
       <div className="flex min-w-0 flex-1 flex-col">
-        <h4 className="font-[family-name:var(--font-display)] text-2xl leading-tight">{item.name}</h4>
+        <h4 className="font-[family-name:var(--font-display)] text-2xl leading-tight">
+          <OpenDish id={item.id} label={`${t.sheet.open}: ${item.name}`} className="text-start hover:text-pomegranate">
+            <span aria-hidden="true">{item.name}</span>
+          </OpenDish>
+        </h4>
         <p className="mt-1 line-clamp-2 text-sm text-date/70">{item.desc}</p>
         {item.tags && item.tags.length > 0 && (
           <ul className="mt-2 flex flex-wrap gap-1.5">

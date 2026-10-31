@@ -15,7 +15,7 @@ export type Content = {
   meta: { title: string; description: string };
   brand: string;
   word: string; // the giant hero word
-  nav: { menu: string; build: string; offers: string; reserve: string; visit: string; order: string };
+  nav: { menu: string; build: string; story: string; offers: string; reserve: string; visit: string; order: string };
   switchLabel: string;
   menuLabel: string;
   close: string;
@@ -37,6 +37,24 @@ export type Content = {
     add: string;
     added: string;
     remove: string;
+    sheet: { open: string; addTo: string; pickOne: string; optional: string; qty: string; pairs: string };
+  };
+  story: {
+    kicker: string;
+    title: string;
+    lead: string;
+    timeline: { year: string; text: string }[];
+    stats: { value: number; suffix: string; label: string }[];
+    quote: string;
+    quoteBy: string;
+  };
+  tableMenu: {
+    link: string;
+    title: string;
+    lead: string;
+    scan: string;
+    back: string;
+    pageTitle: string;
   };
   picks: { kicker: string; title: string; lead: string; ids: string[] };
   offers: { kicker: string; title: string; lead: string; serves: string; save: string; items: Offer[] };
@@ -125,7 +143,7 @@ const ar: Content = {
   },
   brand: "شوّاية دجلة",
   word: "دجلة",
-  nav: { menu: "المنيو", build: "لفّة الصمون", offers: "العروض", reserve: "احجز", visit: "زورونا", order: "اطلب واتساب" },
+  nav: { menu: "المنيو", build: "لفّة الصمون", story: "قصتنا", offers: "العروض", reserve: "احجز", visit: "زورونا", order: "اطلب واتساب" },
   switchLabel: "English",
   menuLabel: "القائمة",
   close: "إغلاق",
@@ -169,6 +187,7 @@ const ar: Content = {
     add: "أضف",
     added: "انضافت للسلة",
     remove: "شيل",
+    sheet: { open: "التفاصيل", addTo: "أضف للطلب", pickOne: "اختار واحد", optional: "اختياري", qty: "الكمية", pairs: "يمشي وياها" },
     categories: [
       {
         id: "grill",
@@ -232,6 +251,33 @@ const ar: Content = {
         ],
       },
     ],
+  },
+  story: {
+    kicker: "قصتنا",
+    title: "من منقلة على الرصيف، لأشهر شوّاية على الشط",
+    lead: "بديناها بمنقلة وحدة وصندوق فحم. نفس التتبيلة، ونفس الفحم، ونفس الناس يرجعون كل خميس.",
+    timeline: [
+      { year: "١٩٩٨", text: "أبو علي يفتح منقلة صغيرة على رصيف أبو نواس: تكة وكباب وبس." },
+      { year: "٢٠٠٦", text: "أول مسگوف على الحطب، والطابور يوصل للجسر كل جمعة." },
+      { year: "٢٠١٥", text: "نفتح الطابق الثاني للعوائل، والتراس على الشط." },
+      { year: "٢٠٢٤", text: "الجيل الثاني يستلم المنقلة، والطلب صار من الموبايل." },
+    ],
+    stats: [
+      { value: 28, suffix: "", label: "سنة على نفس الفحم" },
+      { value: 1200, suffix: "+", label: "سيخ نشويه كل يوم" },
+      { value: 45, suffix: "", label: "دقيقة لكل مسگوف" },
+      { value: 4, suffix: "", label: "أجيال من الزبائن" },
+    ],
+    quote: "السر مو بالتتبيلة. السر إنك تصبر على الفحم لحد ما يبيّض.",
+    quoteBy: "أبو علي، مؤسس الشوّاية",
+  },
+  tableMenu: {
+    link: "افتح المنيو الكامل",
+    title: "منيو الطاولة",
+    lead: "امسح الكود من طاولتك، اختار، واطلب. بدون انتظار النادل.",
+    scan: "امسح بكاميرا الموبايل",
+    back: "الرئيسية",
+    pageTitle: "منيو شوّاية دجلة",
   },
   picks: {
     kicker: "الأكثر طلباً",
@@ -362,7 +408,7 @@ const en: Content = {
   },
   brand: "Dijla Grill",
   word: "DIJLA",
-  nav: { menu: "Menu", build: "The samoon", offers: "Deals", reserve: "Book", visit: "Visit", order: "Order on WhatsApp" },
+  nav: { menu: "Menu", build: "The samoon", story: "Story", offers: "Deals", reserve: "Book", visit: "Visit", order: "Order on WhatsApp" },
   switchLabel: "العربية",
   menuLabel: "Menu",
   close: "Close",
@@ -406,6 +452,7 @@ const en: Content = {
     add: "Add",
     added: "Added to your order",
     remove: "Remove",
+    sheet: { open: "Details", addTo: "Add to order", pickOne: "Pick one", optional: "Optional", qty: "Quantity", pairs: "Goes well with" },
     categories: [
       {
         id: "grill",
@@ -469,6 +516,33 @@ const en: Content = {
         ],
       },
     ],
+  },
+  story: {
+    kicker: "Our story",
+    title: "From a sidewalk grill to the river's favorite",
+    lead: "We started with one grill and a box of charcoal. Same marinade, same charcoal, and the same people coming back every Thursday.",
+    timeline: [
+      { year: "1998", text: "Abu Ali sets up a small grill on the Abu Nuwas sidewalk: tikka and kebab, nothing else." },
+      { year: "2006", text: "The first wood-fire masgouf. The Friday queue reaches the bridge." },
+      { year: "2015", text: "We open the family floor upstairs and the river terrace." },
+      { year: "2024", text: "The second generation takes over the grill, and ordering moves to your phone." },
+    ],
+    stats: [
+      { value: 28, suffix: "", label: "years on the same charcoal" },
+      { value: 1200, suffix: "+", label: "skewers grilled every day" },
+      { value: 45, suffix: "", label: "minutes for every masgouf" },
+      { value: 4, suffix: "", label: "generations of regulars" },
+    ],
+    quote: "The secret isn't the marinade. It's waiting until the charcoal turns white.",
+    quoteBy: "Abu Ali, founder",
+  },
+  tableMenu: {
+    link: "Open the full menu",
+    title: "Table menu",
+    lead: "Scan the code at your table, pick, and order. No waiting for a waiter.",
+    scan: "Scan with your phone camera",
+    back: "Home",
+    pageTitle: "Dijla Grill menu",
   },
   picks: {
     kicker: "Most ordered",

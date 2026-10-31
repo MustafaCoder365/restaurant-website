@@ -69,5 +69,10 @@ export const photos = {
     "photo-1697126248475-a537cc5cce28",
   ],
   interior: "photo-1758573795588-b69cabae5d30", // Omar Abozeid
+  story: [
+    "photo-1561760041-ca62af0d9047", // T Foz
+    "photo-1599487488170-d11ec9c172f0", // Hamid Roshaan
+    "photo-1762858376497-567882c99f3a", // Fatih Beki
+  ],
   night: "photo-1626164002190-4c82cc40587a", // Ugur Arpaci
 } as const;

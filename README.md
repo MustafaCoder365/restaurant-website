@@ -25,6 +25,9 @@
 - 🥪 **"The samoon, layer by layer"** — a pinned scroll scene: each step lights up and its layer bounces onto a 3D samoon sandwich until it's ready
 - 🎗️ **Tilted marquee ribbons** — dish names and house sayings, RTL-aware
 - 🛒 **Online ordering** — add dishes from anywhere on the page, adjust quantities in a slide-out order panel, choose pickup, delivery, or dine-in, and send the finished order to WhatsApp as a ready-written message. The order is saved in the browser
+- 🍽️ **Dish details** — tap any dish for a big photo, choices (bread, amba, masgouf weight, extras, sugar), quantity, and "goes well with" suggestions. The price updates as you choose, and each combination becomes its own line in the order
+- 📱 **Table QR menu** — a separate `/menu` page with a sticky category bar that follows your scroll, and a QR code on the home page that opens it
+- 📖 **Our story** — photo collage, a timeline since 1998, numbers that count up, and a word from the founder
 - 📋 **Photo menu** — every dish has a real photo, with search (Arabic-aware: ignores diacritics and letter variants), tag filters, and category tabs
 - ⭐ **Most ordered** — three big photo cards for the house favorites
 - 🎟️ **House deals** — group trays styled as tear-off tickets, with the saving and party size
@@ -45,6 +48,7 @@
 | **Menu** | Photo cards with search, filters, tabs, and add-to-order |
 | **House deals** | Group trays with savings |
 | **Photo strip** | Two rows of real food photos sliding past each other |
+| **Our story** | Photo collage, timeline, counters, founder quote |
 | **Book a table** | Day, time, guests, and seating, sent to WhatsApp |
 | **Order panel** | Quantities, order type, details, totals, WhatsApp checkout |
 | **Visit** | Address, hours, live status, call, WhatsApp, and map |
@@ -91,7 +95,7 @@ Open http://localhost:3000/en or http://localhost:3000/ar. Pushing to `main` dep
 
 ## 📷 Photo credits
 
-Photos from [Unsplash](https://unsplash.com), free under the [Unsplash License](https://unsplash.com/license): Markus Winkler, Hamid Roshaan, Husien Bisky, Imad 786, Victoria Shes, Gang Hao, Mihály Köles, Francisca Dzise, Denis Agati, maryam emkani, mostafa rzq, Filipp Romanovski, Adam Bartoszewicz, Ömer Haktan Bulut, Mahmoud Sulaiman, Anna Pelzer, aboodi vesakaran, Nathan Dumlao, Benjamin Chambon, Zeki Okur, Shoeib Abolhassani, Chez Le Libanais, Rita Daisy, and Omar Abozeid.
+Photos from [Unsplash](https://unsplash.com), free under the [Unsplash License](https://unsplash.com/license): Markus Winkler, Hamid Roshaan, Husien Bisky, Imad 786, T Foz, Fatih Beki, Victoria Shes, Gang Hao, Mihály Köles, Francisca Dzise, Denis Agati, maryam emkani, mostafa rzq, Filipp Romanovski, Adam Bartoszewicz, Ömer Haktan Bulut, Mahmoud Sulaiman, Anna Pelzer, aboodi vesakaran, Nathan Dumlao, Benjamin Chambon, Zeki Okur, Shoeib Abolhassani, Chez Le Libanais, Rita Daisy, and Omar Abozeid.
 
 ## 👤 Author
 

@@ -17,6 +17,11 @@ type CartValue = {
   open: boolean;
   setOpen: (v: boolean) => void;
   toast: { id: string; n: number } | null;
+  /** Item id whose detail sheet is open. */
+  detail: string | null;
+  setDetail: (id: string | null) => void;
+  /** Add several of one line at once (from the detail sheet). */
+  addMany: (key: string, qty: number) => void;
 };
 
 const CartContext = createContext<CartValue | null>(null);
@@ -26,6 +31,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<Lines>({});
   const [open, setOpen] = useState(false);
   const [toast, setToast] = useState<{ id: string; n: number } | null>(null);
+  const [detail, setDetail] = useState<string | null>(null);
   const loaded = useRef(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -60,12 +66,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const add = useCallback((id: string) => {
-    setLines((prev) => ({ ...prev, [id]: Math.min((prev[id] ?? 0) + 1, 99) }));
+  const addMany = useCallback((id: string, qty: number) => {
+    setLines((prev) => ({ ...prev, [id]: Math.min((prev[id] ?? 0) + qty, 99) }));
     setToast((t) => ({ id, n: (t?.n ?? 0) + 1 }));
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), 1800);
   }, []);
+
+  const add = useCallback((id: string) => addMany(id, 1), [addMany]);
 
   const dec = useCallback((id: string) => {
     setLines((prev) => {
@@ -90,8 +98,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       open,
       setOpen,
       toast,
+      detail,
+      setDetail,
+      addMany,
     }),
-    [lines, add, dec, set, clear, open, toast],
+    [lines, add, dec, set, clear, open, toast, detail, addMany],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

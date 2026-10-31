@@ -2,15 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ShoppingBag, Trash2, X, MessageCircle } from "lucide-react";
-import { DELIVERY_FEE, WHATSAPP_NUMBER, type Content } from "@/lib/content";
-import { catalog } from "@/lib/catalog";
+import { DELIVERY_FEE, WHATSAPP_NUMBER, type Content, type Locale } from "@/lib/content";
+import { catalog, resolveLine } from "@/lib/catalog";
 import { dishPhotos, unsplash } from "@/lib/photos";
 import { AddButton } from "./AddButton";
 import { useCart } from "./CartContext";
 
 type OrderType = "pickup" | "delivery" | "dinein";
 
-export function CartDrawer({ t, locale }: { t: Content; locale: string }) {
+export function CartDrawer({ t, locale, lang }: { t: Content; locale: string; lang: Locale }) {
   const { lines, count, open, setOpen, clear, toast } = useCart();
   const items = useMemo(() => catalog(t), [t]);
   const fmt = useMemo(() => new Intl.NumberFormat(locale), [locale]);
@@ -27,9 +27,12 @@ export function CartDrawer({ t, locale }: { t: Content; locale: string }) {
   const opener = useRef<HTMLElement | null>(null);
 
   const rows = Object.entries(lines)
-    .filter(([id]) => items[id])
-    .map(([id, qty]) => ({ ...items[id], qty }));
-  const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
+    .map(([key, qty]) => {
+      const line = resolveLine(items, key, lang);
+      return line ? { ...line, qty } : null;
+    })
+    .filter((r) => r !== null);
+  const subtotal = rows.reduce((s, r) => s + r.unit * r.qty, 0);
   const fee = type === "delivery" && rows.length > 0 ? DELIVERY_FEE : 0;
   const total = subtotal + fee;
   const money = (n: number) => `${fmt.format(n)} ${t.menu.currency}`;
@@ -75,7 +78,9 @@ export function CartDrawer({ t, locale }: { t: Content; locale: string }) {
   const valid = !missing.name && !missing.phone && !missing.address;
 
   function message() {
-    const lineText = rows.map((r) => `• ${r.qty} × ${r.name} — ${money(r.price * r.qty)}`).join("\n");
+    const lineText = rows
+      .map((r) => `• ${r.qty} × ${r.name}${r.detail ? ` (${r.detail})` : ""} — ${money(r.unit * r.qty)}`)
+      .join("\n");
     const parts: (string | null)[] = [
       c.msgHello,
       "",
@@ -101,7 +106,7 @@ export function CartDrawer({ t, locale }: { t: Content; locale: string }) {
     window.open(url, "_blank", "noopener");
   }
 
-  const toastName = toast ? items[toast.id]?.name : null;
+  const toastName = toast ? resolveLine(items, toast.id, lang)?.name : null;
 
   const field =
     "mt-1 w-full rounded-xl border-2 border-date/15 bg-paper px-3.5 py-2.5 text-date outline-none transition-colors placeholder:text-date/40 focus:border-pomegranate";
@@ -197,10 +202,10 @@ export function CartDrawer({ t, locale }: { t: Content; locale: string }) {
                   <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
                     <ul className="divide-y divide-date/10">
                       {rows.map((r) => (
-                        <li key={r.id} className="flex items-center gap-3 py-3">
-                          {dishPhotos[r.id] && (
+                        <li key={r.key} className="flex items-center gap-3 py-3">
+                          {dishPhotos[r.itemId] && (
                             <img
-                              src={unsplash(dishPhotos[r.id], 120, 120)}
+                              src={unsplash(dishPhotos[r.itemId], 120, 120)}
                               alt=""
                               className="h-14 w-14 shrink-0 rounded-xl bg-paper object-cover"
                               loading="lazy"
@@ -208,9 +213,10 @@ export function CartDrawer({ t, locale }: { t: Content; locale: string }) {
                           )}
                           <div className="min-w-0 flex-1">
                             <p className="truncate font-semibold">{r.name}</p>
-                            <p className="text-sm tabular-nums text-date/65">{money(r.price * r.qty)}</p>
+                            {r.detail && <p className="truncate text-xs text-date/60">{r.detail}</p>}
+                            <p className="text-sm tabular-nums text-date/65">{money(r.unit * r.qty)}</p>
                           </div>
-                          <AddButton id={r.id} name={r.name} addLabel={t.menu.add} removeLabel={t.menu.remove} />
+                          <AddButton id={r.key} name={r.name} addLabel={t.menu.add} removeLabel={t.menu.remove} />
                         </li>
                       ))}
                     </ul>
