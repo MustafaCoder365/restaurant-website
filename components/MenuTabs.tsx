@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { Flame, Leaf, Search, Star, Users, X } from "lucide-react";
+import { CupSoda, Flame, Leaf, Search, Star, Users, X } from "lucide-react";
 import type { Content, MenuItem, Tag } from "@/lib/content";
 import { dishPhotos, srcSet, unsplash } from "@/lib/photos";
 import { AddButton } from "./cart/AddButton";
@@ -39,6 +39,15 @@ export function DishCard({ item, t, fmt }: { item: MenuItem; t: Content["menu"];
   const photo = dishPhotos[item.id];
   return (
     <li className="group flex gap-4 rounded-3xl bg-paper p-3 shadow-[0_14px_40px_-28px_rgba(59,31,20,0.6)] ring-1 ring-date/5 transition-shadow hover:shadow-[0_22px_50px_-26px_rgba(59,31,20,0.7)] sm:p-4">
+      {!photo && (
+        <OpenDish
+          id={item.id}
+          label={`${t.sheet.open}: ${item.name}`}
+          className="grid h-28 w-28 shrink-0 place-items-center rounded-2xl bg-saffron/25 text-[#7a4d00] sm:h-32 sm:w-32"
+        >
+          <CupSoda className="h-10 w-10" aria-hidden="true" />
+        </OpenDish>
+      )}
       {photo && (
         <OpenDish
           id={item.id}

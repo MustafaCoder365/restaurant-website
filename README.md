@@ -95,7 +95,7 @@ Open http://localhost:3000/en or http://localhost:3000/ar. Pushing to `main` dep
 
 ## 📷 Photo credits
 
-Photos from [Unsplash](https://unsplash.com), free under the [Unsplash License](https://unsplash.com/license): Markus Winkler, Hamid Roshaan, Husien Bisky, Imad 786, T Foz, Fatih Beki, Victoria Shes, Gang Hao, Mihály Köles, Francisca Dzise, Denis Agati, maryam emkani, mostafa rzq, Filipp Romanovski, Adam Bartoszewicz, Ömer Haktan Bulut, Mahmoud Sulaiman, Anna Pelzer, aboodi vesakaran, Nathan Dumlao, Benjamin Chambon, Zeki Okur, Shoeib Abolhassani, Chez Le Libanais, Rita Daisy, and Omar Abozeid.
+Photos from [Unsplash](https://unsplash.com), free under the [Unsplash License](https://unsplash.com/license): Markus Winkler, Hamid Roshaan, Husien Bisky, Imad 786, T Foz, Fatih Beki, Victoria Shes, Gang Hao, Mihály Köles, Francisca Dzise, Denis Agati, maryam emkani, mostafa rzq, Filipp Romanovski, Adam Bartoszewicz, Ömer Haktan Bulut, Mahmoud Sulaiman, Anna Pelzer, aboodi vesakaran, Derick McKinney, Pille R. Priske, Anton, Alimentos Fotogénicos, Benjamin Chambon, Zeki Okur, Shoeib Abolhassani, Chez Le Libanais, Rita Daisy, and Omar Abozeid.
 
 ## 👤 Author
 

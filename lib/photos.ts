@@ -35,16 +35,15 @@ export const dishPhotos: Record<string, string> = {
   tashreeb: "photo-1620041328526-d0cf044a0739", // Filipp Romanovski
   bagilla: "photo-1622040806062-27ae4deb4a40", // Adam Bartoszewicz
   kahi: "photo-1617806501553-d3a6a3a7b227", // Ömer Haktan Bulut
-  makhlama: "photo-1657801249618-736f61b83ee3", // Mahmoud Sulaiman
-  aroog: "photo-1617806501441-2a4a45c5316c", // Ömer Haktan Bulut
+  makhlama: "photo-1547058881-aa0edd92aab3", // Pille R. Priske
+  aroog: "photo-1593001872095-7d5b3868fb1d", // Anton
   hummus: "photo-1697126248475-a537cc5cce28", // Imad 786
   salad: "photo-1512621776951-a57141f2eefd", // Anna Pelzer
   torshi: "photo-1696950170773-db0bf33ca0ca", // aboodi vesakaran
-  rice: "photo-1610057098265-05f2bcbedd55", // Nathan Dumlao
+  rice: "photo-1658346368601-869ae3ded6d1", // Derick McKinney
   baklava: "photo-1761828122856-8703baac8e86", // Benjamin Chambon
   chai: "photo-1715017245474-5533582014a3", // Zeki Okur
-  ayran: "photo-1778448806128-18e8354356e1", // Shoeib Abolhassani
-  noomi: "photo-1778448563279-e7b39093933c", // Shoeib Abolhassani
+  noomi: "photo-1728777187102-1ed5cd6346d5", // Alimentos Fotogénicos
   "offer-family": "photo-1786174045055-1eb50942e273", // Chez Le Libanais
   "offer-masgouf": "photo-1725393325387-07f0d4951528", // Francisca Dzise
   "offer-breakfast": "photo-1746274394124-141a1d1c5af3", // Rita Daisy
