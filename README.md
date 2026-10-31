@@ -24,7 +24,11 @@
 - 🍅 **3D food around the title** — a skewer, tomato, onion, lemon, chilies, samoon bread, a tea glass, and more, all modeled in code from primitives (no model files). They pop in, float, follow the pointer, and fly outward as you scroll
 - 🥪 **"The samoon, layer by layer"** — a pinned scroll scene: each step lights up and its layer bounces onto a 3D samoon sandwich until it's ready
 - 🎗️ **Tilted marquee ribbons** — dish names and house sayings, RTL-aware
-- 📋 **Full menu** — six categories as keyboard-accessible tabs, prices in IQD, and tags (spicy, vegetarian, house favorite, serves two)
+- 🛒 **Online ordering** — add dishes from anywhere on the page, adjust quantities in a slide-out order panel, choose pickup, delivery, or dine-in, and send the finished order to WhatsApp as a ready-written message. The order is saved in the browser
+- 📋 **Photo menu** — every dish has a real photo, with search (Arabic-aware: ignores diacritics and letter variants), tag filters, and category tabs
+- ⭐ **Most ordered** — three big photo cards for the house favorites
+- 🎟️ **House deals** — group trays styled as tear-off tickets, with the saving and party size
+- 📅 **Table booking** — pick a day, time, party size, and seating area, then confirm on WhatsApp
 - 🟢 **Live "open now" status** — calculated in Baghdad time, including the after-midnight hours
 - 🌍 **Full Arabic and English** — separate routes (`/ar`, `/en`), RTL layout, and Iraqi dish names in both languages
 - ⚡ **Fast 3D** — studio reflections baked once, rendering paused when off screen, lighter scenes on phones, and WebGL-free fallback
@@ -36,9 +40,13 @@
 | **Intro** | Color stripes and the name, first visit only |
 | **Hero** | Giant name with 3D food, tagline, menu and WhatsApp buttons, live status, spinning badge |
 | **Ribbons** | Two tilted marquees crossing the page |
+| **Most ordered** | Three house favorites as large photo cards |
 | **The samoon** | Pinned scroll scene building a 3D sandwich in six steps |
-| **Menu** | Tabbed categories with prices, descriptions, and tags |
-| **Gallery** | Tilted photo cards |
+| **Menu** | Photo cards with search, filters, tabs, and add-to-order |
+| **House deals** | Group trays with savings |
+| **Photo strip** | Two rows of real food photos sliding past each other |
+| **Book a table** | Day, time, guests, and seating, sent to WhatsApp |
+| **Order panel** | Quantities, order type, details, totals, WhatsApp checkout |
 | **Visit** | Address, hours, live status, call, WhatsApp, and map |
 
 ## 🛠️ Tech Stack
@@ -61,6 +69,9 @@ app/
 └── [lang]/            # Arabic and English pages (layout sets lang + dir)
 components/
 ├── three/             # Shared canvas, food models, hero scene, samoon scene
+├── cart/              # Order state, add buttons, order panel
+├── Sections.tsx       # Most ordered, house deals, photo strip
+├── Reserve.tsx        # Table booking
 ├── BuildSection.tsx   # Pinned scroll story
 ├── MenuTabs.tsx       # Tabbed menu
 └── ...                # Header, intro, ribbons, open status, logo
@@ -80,7 +91,7 @@ Open http://localhost:3000/en or http://localhost:3000/ar. Pushing to `main` dep
 
 ## 📷 Photo credits
 
-Photos from [Unsplash](https://unsplash.com), free under the [Unsplash License](https://unsplash.com/license): Markus Winkler, Hamid Roshaan, Husien Bisky, and Imad 786.
+Photos from [Unsplash](https://unsplash.com), free under the [Unsplash License](https://unsplash.com/license): Markus Winkler, Hamid Roshaan, Husien Bisky, Imad 786, Victoria Shes, Gang Hao, Mihály Köles, Francisca Dzise, Denis Agati, maryam emkani, mostafa rzq, Filipp Romanovski, Adam Bartoszewicz, Ömer Haktan Bulut, Mahmoud Sulaiman, Anna Pelzer, aboodi vesakaran, Nathan Dumlao, Benjamin Chambon, Zeki Okur, Shoeib Abolhassani, Chez Le Libanais, Rita Daisy, and Omar Abozeid.
 
 ## 👤 Author
 

@@ -180,3 +180,37 @@ html[data-intro="seen"] .intro-word {
   margin-top: calc(var(--s) * -1);
   padding-top: var(--s);
 }
+
+/* ---------- Cart ---------- */
+@keyframes bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.cart-bump {
+  animation: bump 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Ticket notches on the dashed tear line */
+.ticket {
+  position: relative;
+}
+.ticket-cut {
+  position: relative;
+}
+.ticket-cut::before,
+.ticket-cut::after {
+  content: "";
+  position: absolute;
+  top: -13px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--color-turquoise);
+}
+.ticket-cut::before {
+  inset-inline-start: -2.25rem;
+}
+.ticket-cut::after {
+  inset-inline-end: -2.25rem;
+}

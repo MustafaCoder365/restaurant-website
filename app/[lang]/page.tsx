@@ -1,5 +1,9 @@
 import { ArrowDown, Clock, MapPin, MessageCircle, Phone } from "lucide-react";
 import { BuildSection } from "@/components/BuildSection";
+import { CartDrawer } from "@/components/cart/CartDrawer";
+import { CartProvider } from "@/components/cart/CartContext";
+import { Offers, PhotoStrip, Picks } from "@/components/Sections";
+import { Reserve } from "@/components/Reserve";
 import { Header } from "@/components/Header";
 import { Intro } from "@/components/Intro";
 import { Logo } from "@/components/Logo";
@@ -8,10 +12,10 @@ import { OpenStatus } from "@/components/OpenStatus";
 import { Ribbons } from "@/components/Ribbons";
 import { HeroScene } from "@/components/Scenes";
 import { MAP_LINK, PHONE_DISPLAY, PHONE_LINK, WHATSAPP_LINK, content, isLocale, type Locale } from "@/lib/content";
-import { photos, srcSet, unsplash } from "@/lib/photos";
+import { catalog } from "@/lib/catalog";
 
 const TILTS = [-6, 4, -3, 5, -4, 3];
-const CARD_TILTS = ["-rotate-3", "rotate-2", "-rotate-1", "rotate-3"];
+const STRIP_IDS = ["masgouf", "mixed", "milaq", "offer-family", "baklava", "chai", "tikka", "hummus"];
 
 // A slowly turning ring of text, like a sticker on the takeaway bag.
 function SpinBadge({ text }: { text: string }) {
@@ -36,8 +40,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const arabicWord = /[؀-ۿ]/.test(t.word);
   const badge = lang === "ar" ? "على الفحم • من ١٩٩٨ • أبو نواس • بغداد • " : "OVER CHARCOAL • SINCE 1998 • ABU NUWAS • BAGHDAD • ";
 
+  const names = catalog(t);
+  const stripCaptions = STRIP_IDS.map((id) => names[id]?.name ?? "");
+
   return (
-    <>
+    <CartProvider>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-saffron focus:px-4 focus:py-2 focus:text-date"
@@ -119,6 +126,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         <Ribbons first={t.ribbons.first} second={t.ribbons.second} />
 
+        <Picks t={t} locale={locale} />
+
         <BuildSection
           title={t.build.title}
           lead={t.build.lead}
@@ -143,29 +152,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* Gallery */}
-        <section aria-labelledby="gallery-title" className="overflow-hidden bg-saffron">
-          <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-24">
-            <h2 id="gallery-title" className="text-center text-6xl text-pomegranate sm:text-7xl">
-              {t.gallery.title}
-            </h2>
-            <ul className="mt-12 grid grid-cols-2 gap-5 sm:gap-8 lg:grid-cols-4">
-              {photos.gallery.map((id, i) => (
-                <li key={id} className={`${CARD_TILTS[i]} rounded-2xl bg-paper p-3 shadow-[0_18px_40px_-18px_rgba(59,31,20,0.55)] transition-transform hover:rotate-0 hover:scale-[1.03]`}>
-                  <img
-                    src={unsplash(id, 600, 720)}
-                    srcSet={srcSet(id, [300, 600, 900], 1.2)}
-                    sizes="(min-width: 1024px) 25vw, 50vw"
-                    alt={t.gallery.alts[i]}
-                    loading="lazy"
-                    decoding="async"
-                    className="aspect-[5/6] w-full rounded-xl bg-cream object-cover"
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        <Offers t={t} locale={locale} />
+
+        <PhotoStrip title={t.gallery.title} captions={stripCaptions} />
+
+        <Reserve t={t} locale={locale} />
 
         {/* Visit */}
         <section id="visit" aria-labelledby="visit-title" className="bg-pomegranate text-cream">
@@ -236,6 +227,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </p>
         </div>
       </footer>
-    </>
+      <CartDrawer t={t} locale={locale} />
+    </CartProvider>
   );
 }

@@ -6,7 +6,8 @@ export function isLocale(value: string): value is Locale {
 }
 
 export type Tag = "spicy" | "veg" | "signature" | "share";
-export type MenuItem = { name: string; desc: string; price: number; tags?: Tag[] };
+export type MenuItem = { id: string; name: string; desc: string; price: number; tags?: Tag[] };
+export type Offer = { id: string; name: string; desc: string; price: number; was: number; serves: number; includes: string[] };
 export type Category = { id: string; name: string; note?: string; items: MenuItem[] };
 
 export type Content = {
@@ -14,7 +15,7 @@ export type Content = {
   meta: { title: string; description: string };
   brand: string;
   word: string; // the giant hero word
-  nav: { menu: string; build: string; visit: string; order: string };
+  nav: { menu: string; build: string; offers: string; reserve: string; visit: string; order: string };
   switchLabel: string;
   menuLabel: string;
   close: string;
@@ -29,6 +30,63 @@ export type Content = {
     currency: string;
     tags: Record<Tag, string>;
     categories: Category[];
+    search: string;
+    all: string;
+    noResults: string;
+    results: string;
+    add: string;
+    added: string;
+    remove: string;
+  };
+  picks: { kicker: string; title: string; lead: string; ids: string[] };
+  offers: { kicker: string; title: string; lead: string; serves: string; save: string; items: Offer[] };
+  cart: {
+    open: string;
+    title: string;
+    empty: string;
+    emptyHint: string;
+    dishes: string;
+    subtotal: string;
+    delivery: string;
+    deliveryNote: string;
+    total: string;
+    type: string;
+    types: { pickup: string; delivery: string; dinein: string };
+    name: string;
+    phone: string;
+    address: string;
+    notes: string;
+    notesHint: string;
+    required: string;
+    send: string;
+    sendNote: string;
+    clear: string;
+    msgHello: string;
+    msgOrder: string;
+    msgTotal: string;
+    msgName: string;
+    msgPhone: string;
+    msgType: string;
+    msgAddress: string;
+    msgNotes: string;
+  };
+  reserve: {
+    kicker: string;
+    title: string;
+    lead: string;
+    date: string;
+    time: string;
+    guests: string;
+    seating: string;
+    seats: { terrace: string; indoor: string; family: string };
+    name: string;
+    phone: string;
+    notes: string;
+    send: string;
+    note: string;
+    required: string;
+    msgHello: string;
+    perks: string[];
   };
   gallery: { title: string; alts: string[] };
   visit: {
@@ -47,6 +105,8 @@ export type Content = {
   footer: { tagline: string; concept: string; credit: string; photos: string };
 };
 
+export const WHATSAPP_NUMBER = "9647900000000";
+export const DELIVERY_FEE = 3000;
 export const PHONE_DISPLAY = "+964 790 000 0000";
 export const PHONE_LINK = "tel:+9647900000000";
 export const WHATSAPP_LINK = "https://wa.me/9647900000000";
@@ -65,7 +125,7 @@ const ar: Content = {
   },
   brand: "شوّاية دجلة",
   word: "دجلة",
-  nav: { menu: "المنيو", build: "لفّة الصمون", visit: "زورونا", order: "اطلب واتساب" },
+  nav: { menu: "المنيو", build: "لفّة الصمون", offers: "العروض", reserve: "احجز", visit: "زورونا", order: "اطلب واتساب" },
   switchLabel: "English",
   menuLabel: "القائمة",
   close: "إغلاق",
@@ -102,16 +162,23 @@ const ar: Content = {
     lead: "الأسعار بالدينار العراقي، وتشمل الخبز والطرشي والمخلل.",
     currency: "د.ع",
     tags: { spicy: "حار", veg: "نباتي", signature: "طبق البيت", share: "يكفي اثنين" },
+    search: "دوّر على أكلة…",
+    all: "الكل",
+    noResults: "ما لگينا شي بهالاسم. جرّب كلمة ثانية.",
+    results: "نتيجة",
+    add: "أضف",
+    added: "انضافت للسلة",
+    remove: "شيل",
     categories: [
       {
         id: "grill",
         name: "المشويات",
         items: [
-          { name: "تكة لحم", desc: "سيخين غنم متبّل، طماطة وبصل مشوي، خبز حار.", price: 12000, tags: ["signature"] },
-          { name: "كباب عراقي", desc: "لحم غنم مفروم بالشحم، على الفحم، مع سماق وبصل.", price: 10000 },
-          { name: "تكة دجاج", desc: "صدر دجاج بالزبادي والليمون والثوم.", price: 9000 },
-          { name: "معلاق", desc: "كبدة وقلب غنم، تنشوي على الطلب.", price: 8000, tags: ["spicy"] },
-          { name: "صينية مشكّل", desc: "تكة وكباب ودجاج ومعلاق، مع رز ومقبلات.", price: 38000, tags: ["share"] },
+          { id: "tikka", name: "تكة لحم", desc: "سيخين غنم متبّل، طماطة وبصل مشوي، خبز حار.", price: 12000, tags: ["signature"] },
+          { id: "kebab", name: "كباب عراقي", desc: "لحم غنم مفروم بالشحم، على الفحم، مع سماق وبصل.", price: 10000 },
+          { id: "chicken", name: "تكة دجاج", desc: "صدر دجاج بالزبادي والليمون والثوم.", price: 9000 },
+          { id: "milaq", name: "معلاق", desc: "كبدة وقلب غنم، تنشوي على الطلب.", price: 8000, tags: ["spicy"] },
+          { id: "mixed", name: "صينية مشكّل", desc: "تكة وكباب ودجاج ومعلاق، مع رز ومقبلات.", price: 38000, tags: ["share"] },
         ],
       },
       {
@@ -119,19 +186,19 @@ const ar: Content = {
         name: "المسگوف",
         note: "يحتاج ٤٥ دقيقة على الحطب. اطلبه أول ما توصل.",
         items: [
-          { name: "مسگوف كارب", desc: "سمكة شبوط مفتوحة، تنشوي واقفة جنب الحطب. للكيلو.", price: 35000, tags: ["signature", "share"] },
-          { name: "مسگوف بالعمبة والطماطة", desc: "نفس المسگوف، مغطّى بطماطة وبصل وعمبة بآخر عشر دقايق.", price: 38000, tags: ["share"] },
-          { name: "سمك بُنّي مشوي", desc: "قطع سمك بُنّي على السيخ مع ليمون وكزبرة.", price: 22000 },
+          { id: "masgouf", name: "مسگوف كارب", desc: "سمكة شبوط مفتوحة، تنشوي واقفة جنب الحطب. للكيلو.", price: 35000, tags: ["signature", "share"] },
+          { id: "masgouf-amba", name: "مسگوف بالعمبة والطماطة", desc: "نفس المسگوف، مغطّى بطماطة وبصل وعمبة بآخر عشر دقايق.", price: 38000, tags: ["share"] },
+          { id: "bunni", name: "سمك بُنّي مشوي", desc: "قطع سمك بُنّي على السيخ مع ليمون وكزبرة.", price: 22000 },
         ],
       },
       {
         id: "plates",
         name: "أكلات البيت",
         items: [
-          { name: "قوزي على تمّن", desc: "لحم غنم مطبوخ ساعات، على رز بالشعرية والكشمش واللوز.", price: 20000, tags: ["signature"] },
-          { name: "دولمة", desc: "ورق عنب وبصل وفلفل محشي بالرز واللحم، بدبس الرمان.", price: 9000 },
-          { name: "تشريب لحم", desc: "خبز مقطّع منقوع بمرق اللحم والحمّص والنومي بصرة.", price: 9000 },
-          { name: "باگلة بالدهن", desc: "فول أخضر بالدهن الحر والبيض، فطور بس للساعة ٢.", price: 5000, tags: ["veg"] },
+          { id: "quzi", name: "قوزي على تمّن", desc: "لحم غنم مطبوخ ساعات، على رز بالشعرية والكشمش واللوز.", price: 20000, tags: ["signature"] },
+          { id: "dolma", name: "دولمة", desc: "ورق عنب وبصل وفلفل محشي بالرز واللحم، بدبس الرمان.", price: 9000 },
+          { id: "tashreeb", name: "تشريب لحم", desc: "خبز مقطّع منقوع بمرق اللحم والحمّص والنومي بصرة.", price: 9000 },
+          { id: "bagilla", name: "باگلة بالدهن", desc: "فول أخضر بالدهن الحر والبيض، فطور بس للساعة ٢.", price: 5000, tags: ["veg"] },
         ],
       },
       {
@@ -139,32 +206,122 @@ const ar: Content = {
         name: "فطور",
         note: "من ٧ الصبح لحد ١٢ الظهر، الجمعة والسبت.",
         items: [
-          { name: "كاهي وگيمر", desc: "معجنات مقرمشة بالقيمر الطازج والدبس أو العسل.", price: 5000, tags: ["veg", "signature"] },
-          { name: "مخلمة", desc: "بيض بالطماطة والبصل واللحم المثروم.", price: 5500 },
-          { name: "عروك", desc: "أقراص مقلية باللحم والخضرة والبهارات.", price: 4000 },
+          { id: "kahi", name: "كاهي وگيمر", desc: "معجنات مقرمشة بالقيمر الطازج والدبس أو العسل.", price: 5000, tags: ["veg", "signature"] },
+          { id: "makhlama", name: "مخلمة", desc: "بيض بالطماطة والبصل واللحم المثروم.", price: 5500 },
+          { id: "aroog", name: "عروك", desc: "أقراص مقلية باللحم والخضرة والبهارات.", price: 4000 },
         ],
       },
       {
         id: "sides",
         name: "مقبلات وسلطات",
         items: [
-          { name: "حمّص بالطحينة", desc: "مع زيت زيتون وكمّون وخبز حار.", price: 4000, tags: ["veg"] },
-          { name: "سلطة عراقية", desc: "طماطة وخيار وبصل وبقدونس بالليمون.", price: 3000, tags: ["veg"] },
-          { name: "طرشي عراقي", desc: "شلغم وقرنابيط وخيار مخلّل بالعمبة.", price: 2000, tags: ["veg", "spicy"] },
-          { name: "تمّن عنبر", desc: "رز عنبر عراقي بالشعرية.", price: 3000, tags: ["veg"] },
+          { id: "hummus", name: "حمّص بالطحينة", desc: "مع زيت زيتون وكمّون وخبز حار.", price: 4000, tags: ["veg"] },
+          { id: "salad", name: "سلطة عراقية", desc: "طماطة وخيار وبصل وبقدونس بالليمون.", price: 3000, tags: ["veg"] },
+          { id: "torshi", name: "طرشي عراقي", desc: "شلغم وقرنابيط وخيار مخلّل بالعمبة.", price: 2000, tags: ["veg", "spicy"] },
+          { id: "rice", name: "تمّن عنبر", desc: "رز عنبر عراقي بالشعرية.", price: 3000, tags: ["veg"] },
         ],
       },
       {
         id: "sweets",
         name: "حلويات ومشروبات",
         items: [
-          { name: "زلابية وبقلاوة", desc: "صحن مشكّل من حلويات السوق.", price: 5000, tags: ["veg"] },
-          { name: "چاي مهيّل", desc: "باستكان، مع ثاني واحد على حسابنا.", price: 1000, tags: ["veg"] },
-          { name: "لبن عيران", desc: "لبن مخفوق بالملح والنعناع.", price: 1500, tags: ["veg"] },
-          { name: "عصير نومي بصرة", desc: "ليمون مجفف، حامض ومنعش.", price: 2500, tags: ["veg"] },
+          { id: "baklava", name: "زلابية وبقلاوة", desc: "صحن مشكّل من حلويات السوق.", price: 5000, tags: ["veg"] },
+          { id: "chai", name: "چاي مهيّل", desc: "باستكان، مع ثاني واحد على حسابنا.", price: 1000, tags: ["veg"] },
+          { id: "ayran", name: "لبن عيران", desc: "لبن مخفوق بالملح والنعناع.", price: 1500, tags: ["veg"] },
+          { id: "noomi", name: "عصير نومي بصرة", desc: "ليمون مجفف، حامض ومنعش.", price: 2500, tags: ["veg"] },
         ],
       },
     ],
+  },
+  picks: {
+    kicker: "الأكثر طلباً",
+    title: "ثلاث أطباق، ما تطلع بدونها",
+    lead: "اللي يرجعون عليها الناس من ١٩٩٨. اضغط أضف وكمّل طلبك.",
+    ids: ["masgouf", "tikka", "quzi"],
+  },
+  offers: {
+    kicker: "عروض البيت",
+    title: "صواني للعزايم",
+    lead: "جايين جماعة؟ هاي الصواني محسوبة على عددكم، وأرخص من الطلب بالمفرد.",
+    serves: "تكفي",
+    save: "توفّر",
+    items: [
+      {
+        id: "offer-family",
+        name: "صينية العيلة",
+        desc: "مشويات مشكّلة، تمّن عنبر، سلطة، حمّص، وخبز حار من التنور.",
+        price: 65000,
+        was: 78000,
+        serves: 4,
+        includes: ["٨ أسياخ مشكّل", "تمّن عنبر", "سلطة وحمّص", "٤ چاي"],
+      },
+      {
+        id: "offer-masgouf",
+        name: "ليلة المسگوف",
+        desc: "مسگوف كيلو ونص على الحطب، مع العمبة والطماطة والطرشي.",
+        price: 58000,
+        was: 66000,
+        serves: 3,
+        includes: ["مسگوف ١.٥ كيلو", "تمّن عنبر", "طرشي وسلطة", "عصير نومي"],
+      },
+      {
+        id: "offer-breakfast",
+        name: "فطور الجمعة لاثنين",
+        desc: "كاهي وگيمر، باگلة بالدهن، مخلمة، وچاي مهيّل لحد ما تكتفون.",
+        price: 15000,
+        was: 18500,
+        serves: 2,
+        includes: ["كاهي وگيمر", "باگلة بالدهن", "مخلمة", "چاي مفتوح"],
+      },
+    ],
+  },
+  cart: {
+    open: "سلّتك",
+    title: "طلبك",
+    empty: "السلة فارغة",
+    emptyHint: "اختار من المنيو واضغط «أضف».",
+    dishes: "طبق",
+    subtotal: "المجموع",
+    delivery: "التوصيل",
+    deliveryNote: "داخل بغداد، خلال ٤٥ دقيقة تقريباً.",
+    total: "الكلّي",
+    type: "شلون تريد طلبك؟",
+    types: { pickup: "استلام من المطعم", delivery: "توصيل", dinein: "آكل بالمطعم" },
+    name: "الاسم",
+    phone: "رقم الموبايل",
+    address: "العنوان",
+    notes: "ملاحظات",
+    notesHint: "مثلاً: بدون بصل، العمبة حارة",
+    required: "مطلوب",
+    send: "ارسل الطلب على واتساب",
+    sendNote: "راح ينفتح واتساب ورسالة الطلب جاهزة، بس دوس إرسال.",
+    clear: "فرّغ السلة",
+    msgHello: "هلا شوّاية دجلة، أريد أطلب:",
+    msgOrder: "الطلب",
+    msgTotal: "المجموع",
+    msgName: "الاسم",
+    msgPhone: "الموبايل",
+    msgType: "النوع",
+    msgAddress: "العنوان",
+    msgNotes: "ملاحظات",
+  },
+  reserve: {
+    kicker: "احجز طاولة",
+    title: "على الشط، والطاولة محجوزة باسمك",
+    lead: "اختار اليوم والساعة وكم نفر، ونأكد لك الحجز على واتساب خلال دقايق.",
+    date: "اليوم",
+    time: "الساعة",
+    guests: "عدد الأشخاص",
+    seating: "وين تحب تگعد؟",
+    seats: { terrace: "التراس على الشط", indoor: "الصالة", family: "قسم العوائل" },
+    name: "الاسم",
+    phone: "رقم الموبايل",
+    notes: "مناسبة أو طلب خاص؟",
+    send: "احجز على واتساب",
+    note: "الحجز مجاني، ونمسك الطاولة ٢٠ دقيقة بعد الموعد.",
+    required: "مطلوب",
+    msgHello: "هلا شوّاية دجلة، أريد أحجز طاولة:",
+    perks: ["المسگوف يجهز وقت ما توصل إذا ذكرته بالحجز", "كيكة عيد الميلاد على حسابنا", "موقف سيارات خلفي مجاني"],
   },
   gallery: {
     title: "من الفحم للصحن",
@@ -205,7 +362,7 @@ const en: Content = {
   },
   brand: "Dijla Grill",
   word: "DIJLA",
-  nav: { menu: "Menu", build: "The samoon", visit: "Visit", order: "Order on WhatsApp" },
+  nav: { menu: "Menu", build: "The samoon", offers: "Deals", reserve: "Book", visit: "Visit", order: "Order on WhatsApp" },
   switchLabel: "العربية",
   menuLabel: "Menu",
   close: "Close",
@@ -242,16 +399,23 @@ const en: Content = {
     lead: "Prices in Iraqi dinar, including bread, pickles, and torshi.",
     currency: "IQD",
     tags: { spicy: "Spicy", veg: "Vegetarian", signature: "House favorite", share: "Serves two" },
+    search: "Search the menu…",
+    all: "All",
+    noResults: "Nothing matches that. Try another word.",
+    results: "results",
+    add: "Add",
+    added: "Added to your order",
+    remove: "Remove",
     categories: [
       {
         id: "grill",
         name: "Grill",
         items: [
-          { name: "Lamb tikka", desc: "Two skewers of marinated lamb, grilled tomato and onion, hot bread.", price: 12000, tags: ["signature"] },
-          { name: "Iraqi kebab", desc: "Minced lamb over charcoal, with sumac and onion.", price: 10000 },
-          { name: "Chicken tikka", desc: "Chicken breast in yogurt, lemon, and garlic.", price: 9000 },
-          { name: "Mi'laq", desc: "Lamb liver and heart, grilled to order.", price: 8000, tags: ["spicy"] },
-          { name: "Mixed grill tray", desc: "Tikka, kebab, chicken, and mi'laq with rice and starters.", price: 38000, tags: ["share"] },
+          { id: "tikka", name: "Lamb tikka", desc: "Two skewers of marinated lamb, grilled tomato and onion, hot bread.", price: 12000, tags: ["signature"] },
+          { id: "kebab", name: "Iraqi kebab", desc: "Minced lamb over charcoal, with sumac and onion.", price: 10000 },
+          { id: "chicken", name: "Chicken tikka", desc: "Chicken breast in yogurt, lemon, and garlic.", price: 9000 },
+          { id: "milaq", name: "Mi'laq", desc: "Lamb liver and heart, grilled to order.", price: 8000, tags: ["spicy"] },
+          { id: "mixed", name: "Mixed grill tray", desc: "Tikka, kebab, chicken, and mi'laq with rice and starters.", price: 38000, tags: ["share"] },
         ],
       },
       {
@@ -259,19 +423,19 @@ const en: Content = {
         name: "Masgouf",
         note: "Takes 45 minutes by the wood fire. Order it when you arrive.",
         items: [
-          { name: "Carp masgouf", desc: "Butterflied carp, grilled upright beside the wood fire. Per kilo.", price: 35000, tags: ["signature", "share"] },
-          { name: "Masgouf with amba and tomato", desc: "Topped with tomato, onion, and amba for the last ten minutes.", price: 38000, tags: ["share"] },
-          { name: "Grilled bunni fish", desc: "Bunni fish on the skewer with lemon and coriander.", price: 22000 },
+          { id: "masgouf", name: "Carp masgouf", desc: "Butterflied carp, grilled upright beside the wood fire. Per kilo.", price: 35000, tags: ["signature", "share"] },
+          { id: "masgouf-amba", name: "Masgouf with amba and tomato", desc: "Topped with tomato, onion, and amba for the last ten minutes.", price: 38000, tags: ["share"] },
+          { id: "bunni", name: "Grilled bunni fish", desc: "Bunni fish on the skewer with lemon and coriander.", price: 22000 },
         ],
       },
       {
         id: "plates",
         name: "Home plates",
         items: [
-          { name: "Quzi on rice", desc: "Slow-cooked lamb over vermicelli rice with raisins and almonds.", price: 20000, tags: ["signature"] },
-          { name: "Dolma", desc: "Vine leaves, onions, and peppers stuffed with rice and meat, in pomegranate molasses.", price: 9000 },
-          { name: "Lamb tashreeb", desc: "Torn bread soaked in lamb broth with chickpeas and dried lime.", price: 9000 },
-          { name: "Bagilla bil dihin", desc: "Fava beans with ghee and egg. Breakfast, until 2 pm only.", price: 5000, tags: ["veg"] },
+          { id: "quzi", name: "Quzi on rice", desc: "Slow-cooked lamb over vermicelli rice with raisins and almonds.", price: 20000, tags: ["signature"] },
+          { id: "dolma", name: "Dolma", desc: "Vine leaves, onions, and peppers stuffed with rice and meat, in pomegranate molasses.", price: 9000 },
+          { id: "tashreeb", name: "Lamb tashreeb", desc: "Torn bread soaked in lamb broth with chickpeas and dried lime.", price: 9000 },
+          { id: "bagilla", name: "Bagilla bil dihin", desc: "Fava beans with ghee and egg. Breakfast, until 2 pm only.", price: 5000, tags: ["veg"] },
         ],
       },
       {
@@ -279,32 +443,122 @@ const en: Content = {
         name: "Breakfast",
         note: "7 am to noon, Friday and Saturday.",
         items: [
-          { name: "Kahi and geymar", desc: "Flaky pastry with fresh clotted cream and date syrup or honey.", price: 5000, tags: ["veg", "signature"] },
-          { name: "Makhlama", desc: "Eggs with tomato, onion, and minced lamb.", price: 5500 },
-          { name: "Aroog", desc: "Fried patties of meat, herbs, and spices.", price: 4000 },
+          { id: "kahi", name: "Kahi and geymar", desc: "Flaky pastry with fresh clotted cream and date syrup or honey.", price: 5000, tags: ["veg", "signature"] },
+          { id: "makhlama", name: "Makhlama", desc: "Eggs with tomato, onion, and minced lamb.", price: 5500 },
+          { id: "aroog", name: "Aroog", desc: "Fried patties of meat, herbs, and spices.", price: 4000 },
         ],
       },
       {
         id: "sides",
         name: "Starters and salads",
         items: [
-          { name: "Hummus with tahini", desc: "With olive oil, cumin, and hot bread.", price: 4000, tags: ["veg"] },
-          { name: "Iraqi salad", desc: "Tomato, cucumber, onion, and parsley with lemon.", price: 3000, tags: ["veg"] },
-          { name: "Iraqi torshi", desc: "Turnip, cauliflower, and cucumber pickled with amba.", price: 2000, tags: ["veg", "spicy"] },
-          { name: "Anber rice", desc: "Fragrant Iraqi anber rice with vermicelli.", price: 3000, tags: ["veg"] },
+          { id: "hummus", name: "Hummus with tahini", desc: "With olive oil, cumin, and hot bread.", price: 4000, tags: ["veg"] },
+          { id: "salad", name: "Iraqi salad", desc: "Tomato, cucumber, onion, and parsley with lemon.", price: 3000, tags: ["veg"] },
+          { id: "torshi", name: "Iraqi torshi", desc: "Turnip, cauliflower, and cucumber pickled with amba.", price: 2000, tags: ["veg", "spicy"] },
+          { id: "rice", name: "Anber rice", desc: "Fragrant Iraqi anber rice with vermicelli.", price: 3000, tags: ["veg"] },
         ],
       },
       {
         id: "sweets",
         name: "Sweets and drinks",
         items: [
-          { name: "Zalabia and baklava", desc: "A mixed plate from the market sweet shops.", price: 5000, tags: ["veg"] },
-          { name: "Cardamom chai", desc: "In an istikan glass, and the second one is on us.", price: 1000, tags: ["veg"] },
-          { name: "Ayran laban", desc: "Whipped yogurt with salt and mint.", price: 1500, tags: ["veg"] },
-          { name: "Noomi Basra", desc: "Dried lime drink, sour and refreshing.", price: 2500, tags: ["veg"] },
+          { id: "baklava", name: "Zalabia and baklava", desc: "A mixed plate from the market sweet shops.", price: 5000, tags: ["veg"] },
+          { id: "chai", name: "Cardamom chai", desc: "In an istikan glass, and the second one is on us.", price: 1000, tags: ["veg"] },
+          { id: "ayran", name: "Ayran laban", desc: "Whipped yogurt with salt and mint.", price: 1500, tags: ["veg"] },
+          { id: "noomi", name: "Noomi Basra", desc: "Dried lime drink, sour and refreshing.", price: 2500, tags: ["veg"] },
         ],
       },
     ],
+  },
+  picks: {
+    kicker: "Most ordered",
+    title: "Three plates you shouldn't leave without",
+    lead: "The ones people keep coming back for since 1998. Tap Add and keep building your order.",
+    ids: ["masgouf", "tikka", "quzi"],
+  },
+  offers: {
+    kicker: "House deals",
+    title: "Trays for the whole table",
+    lead: "Coming as a group? These trays are sized for you, and cost less than ordering one by one.",
+    serves: "Serves",
+    save: "Save",
+    items: [
+      {
+        id: "offer-family",
+        name: "Family tray",
+        desc: "Mixed grill, anber rice, salad, hummus, and hot tannour bread.",
+        price: 65000,
+        was: 78000,
+        serves: 4,
+        includes: ["8 mixed skewers", "Anber rice", "Salad and hummus", "4 chai"],
+      },
+      {
+        id: "offer-masgouf",
+        name: "Masgouf night",
+        desc: "1.5 kg masgouf over the wood fire, with amba, tomato, and torshi.",
+        price: 58000,
+        was: 66000,
+        serves: 3,
+        includes: ["1.5 kg masgouf", "Anber rice", "Torshi and salad", "Noomi Basra"],
+      },
+      {
+        id: "offer-breakfast",
+        name: "Friday breakfast for two",
+        desc: "Kahi and geymar, bagilla, makhlama, and cardamom chai until you're done.",
+        price: 15000,
+        was: 18500,
+        serves: 2,
+        includes: ["Kahi and geymar", "Bagilla bil dihin", "Makhlama", "Bottomless chai"],
+      },
+    ],
+  },
+  cart: {
+    open: "Your order",
+    title: "Your order",
+    empty: "Your order is empty",
+    emptyHint: "Pick something from the menu and tap Add.",
+    dishes: "items",
+    subtotal: "Subtotal",
+    delivery: "Delivery",
+    deliveryNote: "Within Baghdad, in about 45 minutes.",
+    total: "Total",
+    type: "How do you want it?",
+    types: { pickup: "Pick up", delivery: "Delivery", dinein: "Dine in" },
+    name: "Name",
+    phone: "Mobile number",
+    address: "Address",
+    notes: "Notes",
+    notesHint: "e.g. no onion, hot amba",
+    required: "Required",
+    send: "Send order on WhatsApp",
+    sendNote: "WhatsApp opens with your order written out. Just tap send.",
+    clear: "Clear order",
+    msgHello: "Hi Dijla Grill, I'd like to order:",
+    msgOrder: "Order",
+    msgTotal: "Total",
+    msgName: "Name",
+    msgPhone: "Mobile",
+    msgType: "Type",
+    msgAddress: "Address",
+    msgNotes: "Notes",
+  },
+  reserve: {
+    kicker: "Book a table",
+    title: "By the river, with your name on the table",
+    lead: "Pick the day, time, and party size, and we'll confirm on WhatsApp within minutes.",
+    date: "Day",
+    time: "Time",
+    guests: "Guests",
+    seating: "Where would you like to sit?",
+    seats: { terrace: "River terrace", indoor: "Main hall", family: "Family section" },
+    name: "Name",
+    phone: "Mobile number",
+    notes: "Occasion or special request?",
+    send: "Book on WhatsApp",
+    note: "Booking is free. We hold the table for 20 minutes.",
+    required: "Required",
+    msgHello: "Hi Dijla Grill, I'd like to book a table:",
+    perks: ["Mention masgouf when booking and it's ready when you arrive", "Birthday cake on us", "Free parking out back"],
   },
   gallery: {
     title: "From charcoal to plate",
